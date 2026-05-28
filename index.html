@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang=\"it\">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0ea5e9">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TimeBridge">
+    
+    <title>TimeBridge - Gestione Straordinari</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --secondary: #6366f1;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #0f172a;
+            --surface: #1e293b;
+            --text-muted: #94a3b8;
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--dark);
+            color: #f8fafc;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(14, 165, 233, 0.2);
+            box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.1);
+        }
+
+        .page-title {
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 30%, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.25rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-top: 0.25rem;
+        }
+
+        .stat-value.primary { color: var(--primary); }
+        .stat-value.success { color: var(--success); }
+        .stat-value.danger { color: var(--danger); }
+        .stat-value.warning { color: var(--warning); }
+
+        .form-control, .form-select {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 10px;
+            padding: 0.65rem 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(15, 23, 42, 0.8);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+            color: #fff;
+        }
+
+        .btn-custom {
+            border-radius: 10px;
+            padding: 0.65rem 1.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(14, 165, 233, 0.4);
+            opacity: 0.95;
+        }
+
+        .table-custom {
+            color: #cbd5e1;
+            margin-bottom: 0;
+        }
+
+        .table-custom th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+            padding: 1rem;
+        }
+
+        .table-custom td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .table-custom tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge-custom {
+            padding: 0.4rem 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .badge-plus { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .badge-minus { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+        }
+
+        .btn-action-danger:hover { background: var(--danger); color: white; }
+        .btn-action-primary:hover { background: var(--primary); color: white; }
+
+        @media (max-width: 768px) {
+            .main-container { padding: 1rem 0.5rem; }
+            .glass-card { padding: 1rem; border-radius: 12px; }
+            .stat-card { padding: 0.75rem; }
+            .stat-value { font-size: 1.35rem; }
+            .table-responsive { border: 0; }
+        }
+
+        /* STILI SOLO PER LA STAMPA OCCULTATI IN SCHERMO */
+        #printTemplate {
+            display: none;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printTemplate, #printTemplate * {
+                visibility: visible;
+            }
+            #printTemplate {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                color: #000 !important;
+                background: #fff !important;
+                font-family: 'Times New Roman', serif !important;
+                padding: 20px !important;
+            }
+            .print-header {
+                text-align: center;
+                border-bottom: 2px solid #000;
+                padding-bottom: 15px;
+                margin-bottom: 25px;
+            }
+            .print-header h1 {
+                font-size: 24px;
+                font-weight: bold;
+                margin: 0;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .print-header p {
+                font-size: 14px;
+                margin: 5px 0 0 0;
+                color: #555;
+            }
+            .print-grid {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 25px;
+                border: 1px solid #ccc;
+                padding: 10px;
+                background: #f9f9f9;
+            }
+            .print-grid-item {
+                font-size: 13px;
+            }
+            .print-grid-item strong {
+                color: #111;
+            }
+            .print-section-title {
+                font-size: 16px;
+                font-weight: bold;
+                border-left: 4px solid #000;
+                padding-left: 8px;
+                margin-top: 20px;
+                margin-bottom: 12px;
+                text-transform: uppercase;
+            }
+            .print-section-title.success { border-left-color: #2e7d32; }
+            .print-section-title.danger { border-left-color: #c62828; }
+            .print-section-title.warning { border-left-color: #ef6c00; }
+            
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            .print-table th {
+                background-color: #f2f2f2 !important;
+                color: #000 !important;
+                font-weight: bold;
+                text-transform: uppercase;
+                font-size: 11px;
+                border: 1px solid #000;
+                padding: 6px 8px;
+                text-align: left;
+            }
+            .print-table td {
+                border: 1px solid #ddd;
+                padding: 6px 8px;
+                font-size: 11px;
+            }
+            .print-table tr:nth-child(even) {
+                background-color: #fafafa !important;
+            }
+            .print-summary {
+                margin-top: 10px;
+                padding: 10px;
+                border-radius: 4px;
+                text-align: right;
+                font-size: 14px;
+                font-weight: bold;
+            }
+            .print-summary.success { background-color: #e8f5e9 !important; border: 1px solid #a5d6a7; color: #2e7d32; }
+            .print-summary.negative { background-color: #ffebee !important; border: 1px solid #ffcdd2; color: #c62828; }
+            .print-summary.warning { background-color: #fff8e1 !important; border: 1px solid #ffe082; color: #ef6c00; }
+            .print-summary p { margin: 0; }
+            .print-summary .value { font-size: 16px; font-weight: 900; }
+            
+            .print-footer {
+                margin-top: 50px;
+                border-top: 1px dashed #999;
+                padding-top: 10px;
+                text-align: center;
+                font-size: 10px;
+                color: #666;
+            }
+            .print-footer-line {
+                margin-bottom: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h1 class="page-title mb-1">TimeBridge</h1>
+            <p class="text-muted mb-0 d-none d-sm-block">Registro Straordinari Personale v7.1 <span class="badge bg-info text-dark ms-2">PRO</span></p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-custom btn-light" onclick="window.print()">
+                <i class="fas fa-print text-dark"></i> <span class="d-none d-md-inline">Stampa / PDF</span>
+            </button>
+            <button class="btn btn-custom btn-danger" onclick="clearAllData()">
+                <i class="fas fa-trash-alt"></i> <span class="d-none d-md-inline">Formatta</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="glass-card stat-card">
+                <div class="text-muted small uppercase font-weight-600">Accumulato</div>
+                <div id="statAccumulated" class="stat-value primary">00:00</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="glass-card stat-card">
+                <div class="text-muted small uppercase font-weight-600">Usufruito</div>
+                <div id="statUsed" class="stat-value warning">00:00</div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="glass-card stat-card" style="position: relative; overflow: hidden;">
+                <div class="text-muted small uppercase font-weight-600">Saldo Attuale</div>
+                <div id="statBalance" class="stat-value success">00:00</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-4">
+            <div class="glass-card">
+                <h4 class="mb-4 font-weight-600"><i class="fas fa-plus-circle me-2 text-info"></i>Nuovo Record</h4>
+                <form id="recordForm" onsubmit="saveRecord(event)">
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Data</label>
+                        <input type="date" id="recDate" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Tipologia</label>
+                        <select id="recType" class="form-select" required>
+                            <option value="accumulo">➕ Accumulo (Straordinario Fatto)</option>
+                            <option value="fruizione">➖ Fruizione (Recupero Ore / Permesso)</option>
+                        </select>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label text-muted small">Ore</label>
+                            <input type="number" id="recHours" class="form-control" min="0" placeholder="0" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label text-muted small">Minuti</label>
+                            <input type="number" id="recMinutes" class="form-control" min="0" max="59" placeholder="0" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted small">Note / Causale (Opzionale)</label>
+                        <input type="text" id="recNotes" class="form-control" placeholder="Es. Progetto X, Visita medica...">
+                    </div>
+                    <button type="submit" class="btn btn-custom btn-primary-custom w-100 justify-content-center">
+                        <i class="fas fa-save"></i> Salva Record
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-8">
+            <div class="glass-card h-100 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                    <h4 class="m-0 font-weight-600"><i class="fas fa-history me-2 text-info"></i>Registro Storico</h4>
+                    <span id="recordCount" class="badge bg-secondary">0 Record totali</span>
+                </div>
+                
+                <div class="table-responsive flex-grow-1">
+                    <table class="table table-custom">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Tipo</th>
+                                <th>Durata</th>
+                                <th>Note / Causale</th>
+                                <th class="text-end">Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registryTableBody">
+                            </tbody>
+                    </table>
+                    <div id="noDataPlaceholder" class="text-center py-5 text-muted">
+                        <i class="fas fa-folder-open fa-3x mb-3 opacity-30"></i>
+                        <p class="m-0">Nessun record inserito nel registro.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="printTemplate"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+// STORAGE MANAGEMENT
+const STORAGE_KEY = 'timebridge_records_v71';
+let records = [];
+
+// Caricamento iniziale
+document.addEventListener('DOMContentLoaded', () => {
+    // Imposta la data odierna nel form
+    document.getElementById('recDate').value = new Date().toISOString().split('T')[0];
+    
+    // Carica record
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+        try {
+            records = JSON.parse(stored);
+        } catch(e) {
+            records = [];
+        }
+    }
+    updateUI();
+});
+
+// Salva Record
+function saveRecord(e) {
+    e.preventDefault();
+    
+    const dateInput = document.getElementById('recDate').value;
+    const typeInput = document.getElementById('recType').value;
+    const hoursInput = parseInt(document.getElementById('recHours').value) || 0;
+    const minsInput = parseInt(document.getElementById('recMinutes').value) || 0;
+    const notesInput = document.getElementById('recNotes').value.trim();
+
+    if(hoursInput === 0 && minsInput === 0) {
+        Swal.fire({ icon: 'warning', title: 'Attenzione', text: 'Inserire una durata valida (almeno 1 minuto).' });
+        return;
+    }
+
+    const newRecord = {
+        id: Date.now(),
+        date: dateInput,
+        type: typeInput,
+        hours: hoursInput,
+        minutes: minsInput,
+        notes: notesInput || '---'
+    };
+
+    records.push(newRecord);
+    // Ordina per data decrescente
+    records.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    saveToStorage();
+    updateUI();
+    
+    // Reset parziale form
+    document.getElementById('recHours').value = '';
+    document.getElementById('recMinutes').value = '';
+    document.getElementById('recNotes').value = '';
+    
+    Swal.fire({ icon: 'success', title: 'Salvato', text: 'Record inserito con successo!', timer: 1500, showConfirmButton: false });
+}
+
+// Elimina singolo record
+function deleteRecord(id) {
+    Swal.fire({
+        title: 'Eliminare il record?',
+        text: "L'azione non può essere annullata!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Sì, elimina',
+        cancelButtonText: 'Annulla'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            records = records.filter(r => r.id !== id);
+            saveToStorage();
+            updateUI();
+            Swal.fire({ icon: 'success', title: 'Eliminato', text: 'Il record è stato rimosso.', timer: 1200, showConfirmButton: false });
+        }
+    });
+}
+
+// Svuota completamente il database
+function clearAllData() {
+    Swal.fire({
+        title: 'Formattare il registro?',
+        text: "Tutti i dati storici inseriti andranno persi definitivamente!",
+        icon: 'danger',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Sì, formatta tutto',
+        cancelButtonText: 'Annulla'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            records = [];
+            saveToStorage();
+            updateUI();
+            Swal.fire({ icon: 'success', title: 'Formattato', text: 'Il registro è tornato vuoto.', timer: 1500, showConfirmButton: false });
+        }
+    });
+}
+
+function saveToStorage() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+}
+
+// Aggiorna l'Interfaccia Utente
+function updateUI() {
+    const tbody = document.getElementById('registryTableBody');
+    const placeholder = document.getElementById('noDataPlaceholder');
+    const counter = document.getElementById('recordCount');
+    
+    tbody.innerHTML = '';
+    counter.innerText = `${records.length} Record totali`;
+
+    let totalAccumulatedMins = 0;
+    let totalUsedMins = 0;
+
+    if (records.length === 0) {
+        placeholder.style.display = 'block';
+    } else {
+        placeholder.style.display = 'none';
+        
+        records.forEach(r => {
+            const currentMins = (r.hours * 60) + r.minutes;
+            if(r.type === 'accumulo') totalAccumulatedMins += currentMins;
+            else totalUsedMins += currentMins;
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong class="text-white">${formatDateString(r.date)}</strong></td>
+                <td>
+                    <span class="badge-custom ${r.type === 'accumulo' ? 'badge-plus' : 'badge-minus'}">
+                        <i class="fas ${r.type === 'accumulo' ? 'fa-plus' : 'fa-minus'} me-1"></i>
+                        ${r.type === 'accumulo' ? 'Accumulo' : 'Fruizione'}
+                    </span>
+                </td>
+                <td><span class="font-weight-600">${formatTime(currentMins)}</span></td>
+                <td class="text-wrap" style="max-width: 250px;"><span class="text-muted small">${r.notes}</span></td>
+                <td class="text-end">
+                    <button class="btn-action btn-action-danger" onclick="deleteRecord(${r.id})" title="Elimina">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    const balanceMins = totalAccumulatedMins - totalUsedMins;
+
+    // Aggiorna contatori visivi a schermo
+    document.getElementById('statAccumulated').innerText = formatTime(totalAccumulatedMins);
+    document.getElementById('statUsed').innerText = formatTime(totalUsedMins);
+    
+    const balanceEl = document.getElementById('statBalance');
+    balanceEl.innerText = (balanceMins < 0 ? '-' : '') + formatTime(Math.abs(balanceMins));
+    
+    if(balanceMins < 0) {
+        balanceEl.className = 'stat-value danger';
+    } else if(balanceMins > 0) {
+        balanceEl.className = 'stat-value success';
+    } else {
+        balanceEl.className = 'stat-value text-white';
+    }
+
+    // Genera il template di stampa pulito in background per la funzione window.print()
+    buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins);
+}
+
+// Helpers Formattazione
+function formatTime(totalMinutes) {
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+}
+
+function formatDateString(dateStr) {
+    if(!dateStr) return '---';
+    const parts = dateStr.split('-');
+    if(parts.length !== 3) return dateStr;
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+// Costruzione Template di Stampa Professionale A4 Alternativo
+function buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins) {
+    const printContainer = document.getElementById('printTemplate');
+    
+    let accumuloRows = '';
+    let fruizioneRows = '';
+
+    const accumuloRecords = records.filter(r => r.type === 'accumulo');
+    const fruizioneRecords = records.filter(r => r.type === 'fruizione');
+
+    if(accumuloRecords.length === 0) {
+        accumuloRows = `<tr><td colspan="3" style="text-align:center; color:#777;">Nessun record di accumulo registrato</td></tr>`;
+    } else {
+        accumuloRecords.forEach(r => {
+            accumuloRows += `
+                <tr>
+                    <td><strong>${formatDateString(r.date)}</strong></td>
+                    <td>${formatTime((r.hours * 60) + r.minutes)}</td>
+                    <td>${r.notes}</td>
+                </tr>
+            `;
+        });
+    }
+
+    if(fruizioneRecords.length === 0) {
+        fruizioneRows = `<tr><td colspan="3" style="text-align:center; color:#777;">Nessun record di recupero/permesso registrato</td></tr>`;
+    } else {
+        fruizioneRecords.forEach(r => {
+            fruizioneRows += `
+                <tr>
+                    <td><strong>${formatDateString(r.date)}</strong></td>
+                    <td>${formatTime((r.hours * 60) + r.minutes)}</td>
+                    <td>${r.notes}</td>
+                </tr>
+            `;
+        });
+    }
+
+    printContainer.innerHTML = `
+        <div class="print-header">
+            <h1>Registro Ore Straordinarie e Recuperi</h1>
+            <p>Rendiconto Personale Dipendente</p>
+        </div>
+
+        <div class="print-grid">
+            <div class="print-grid-item"><strong>Documento di:</strong> Dipendente Interno</div>
+            <div class="print-grid-item"><strong>Stato Registro:</strong> Attivo / Verificato</div>
+            <div class="print-grid-item"><strong>Totale Voci:</strong> ${records.length} record</div>
+        </div>
+
+        <div class="print-section">
+            <h3 class="print-section-title success">1. Prospetto Ore Accumulate (Straordinari Effettuati)</h3>
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Data Effettuazione</th>
+                        <th style="width: 20%;">Durata Accumulo</th>
+                        <th style="width: 60%;">Causale / Note Attività</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${accumuloRows}
+                </tbody>
+            </table>
+            <div class="print-summary success">
+                <p>Totale Accumulato: <span class="value">${formatTime(totalAccumulatedMins)}</span></p>
+            </div>
+        </div>
+
+        <div class="print-section" style="margin-top: 30px;">
+            <h3 class="print-section-title warning">2. Prospetto Ore Usufruite (Recuperi e Permessi)</h3>
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Data Fruizione</th>
+                        <th style="width: 20%;">Durata Recupero</th>
+                        <th style="width: 60%;">Note / Giustificativo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${fruizioneRows}
+                </tbody>
+            </table>
+            <div class="print-summary warning">
+                <p>Totale Usufruito: <span class="value">${formatTime(totalUsedMins)}</span></p>
+            </div>
+        </div>
+
+        <div class="print-section" style="margin-top: 30px; page-break-inside: avoid;">
+            <h3 class="print-section-title ${balanceMins < 0 ? 'danger' : 'success'}">3. Saldo Finale Riassuntivo</h3>
+            <div class="print-summary ${balanceMins < 0 ? 'negative' : 'success'}">
+                <p>Saldo Straordinario Attuale: <span class="value">${balanceMins < 0 ? '-' : ''}${formatTime(Math.abs(balanceMins))}</span></p>
+                ${balanceMins < 0 ? `<p style="margin-top: 5px; font-weight: bold; font-size: 12px; text-transform: uppercase;">Attenzione: Il saldo ore risulta attualmente in negativo.</p>` : ''}
+            </div>
+        </div>
+
+        <div class="print-footer">
+            <div class="print-footer-line">Documento ufficiale generato il ${new Date().toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+            <div class="print-footer-line">Sviluppato da Carmelo Vomero - Assistente Tecnico Informatico</div>
+            <div class="print-footer-line">TimeBridge - Sistema Gestione Ore Automatica V71 PRO</div>
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>
