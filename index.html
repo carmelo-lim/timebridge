@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang=\"it\">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" href="icon.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     
@@ -98,19 +98,29 @@
         .stat-value.warning { color: var(--warning); }
 
         .form-control, .form-select {
-            background-color: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #1a2540;
+            border: 2px solid rgba(14, 165, 233, 0.3);
             color: #fff;
             border-radius: 10px;
-            padding: 0.65rem 1rem;
+            padding: 0.75rem 1rem;
             transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .form-control::placeholder {
+            color: #cbd5e1;
+            opacity: 0.7;
         }
 
         .form-control:focus, .form-select:focus {
-            background-color: rgba(15, 23, 42, 0.8);
+            background-color: #1a2540;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.25);
             color: #fff;
+        }
+
+        .form-label {
+            font-weight: 600;
         }
 
         .btn-custom {
@@ -133,6 +143,49 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(14, 165, 233, 0.4);
             opacity: 0.95;
+        }
+
+        .user-info-card {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(99, 102, 241, 0.15));
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .user-info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .user-info-icon {
+            color: var(--primary);
+            font-size: 1.1rem;
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .user-info-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-info-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .user-info-value {
+            font-weight: 600;
+            color: #f8fafc;
         }
 
         .table-custom {
@@ -192,6 +245,7 @@
             .stat-card { padding: 0.75rem; }
             .stat-value { font-size: 1.35rem; }
             .table-responsive { border: 0; }
+            .user-info-card { padding: 1rem; }
         }
 
         /* STILI SOLO PER LA STAMPA OCCULTATI IN SCHERMO */
@@ -234,6 +288,19 @@
                 font-size: 14px;
                 margin: 5px 0 0 0;
                 color: #555;
+            }
+            .print-user-info {
+                margin-bottom: 25px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                background: #f9f9f9;
+            }
+            .print-user-info-item {
+                font-size: 13px;
+                margin-bottom: 5px;
+            }
+            .print-user-info-item strong {
+                color: #111;
             }
             .print-grid {
                 display: flex;
@@ -319,7 +386,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
             <h1 class="page-title mb-1">TimeBridge</h1>
-            <p class="text-muted mb-0 d-none d-sm-block">Registro Straordinari Personale v7.1 <span class="badge bg-info text-dark ms-2">PRO</span></p>
+            <p class="text-muted mb-0 d-none d-sm-block">Registro Straordinari Personale v7.2 <span class="badge bg-info text-dark ms-2">PRO</span></p>
         </div>
         <div class="d-flex gap-2">
             <button class="btn btn-custom btn-light" onclick="window.print()">
@@ -328,6 +395,50 @@
             <button class="btn btn-custom btn-danger" onclick="clearAllData()">
                 <i class="fas fa-trash-alt"></i> <span class="d-none d-md-inline">Formatta</span>
             </button>
+        </div>
+    </div>
+
+    <!-- SEZIONE DATI PERSONALI -->
+    <div class="user-info-card">
+        <div class="row g-3">
+            <div class="col-12 col-md-4">
+                <div class="user-info-item">
+                    <div class="user-info-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info-text">
+                        <span class="user-info-label">Nome</span>
+                        <input type="text" id="userFirstName" class="form-control form-control-sm" placeholder="Inserisci il tuo nome" style="max-width: 200px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="user-info-item">
+                    <div class="user-info-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info-text">
+                        <span class="user-info-label">Cognome</span>
+                        <input type="text" id="userLastName" class="form-control form-control-sm" placeholder="Inserisci il tuo cognome" style="max-width: 200px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="user-info-item">
+                    <div class="user-info-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="user-info-text">
+                        <span class="user-info-label">Ruolo</span>
+                        <select id="userRole" class="form-control form-control-sm" style="max-width: 200px;">
+                            <option value="">-- Seleziona ruolo --</option>
+                            <option value="assistente-tecnico">Assistente Tecnico</option>
+                            <option value="assistente-amministrativo">Assistente Amministrativo</option>
+                            <option value="collaboratore-scolastico">Collaboratore Scolastico</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -358,28 +469,28 @@
                 <h4 class="mb-4 font-weight-600"><i class="fas fa-plus-circle me-2 text-info"></i>Nuovo Record</h4>
                 <form id="recordForm" onsubmit="saveRecord(event)">
                     <div class="mb-3">
-                        <label class="form-label text-muted small">Data</label>
+                        <label class="form-label">Data</label>
                         <input type="date" id="recDate" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label text-muted small">Tipologia</label>
+                        <label class="form-label">Tipologia</label>
                         <select id="recType" class="form-select" required>
-                            <option value="accumulo">➕ Accumulo (Straordinario Fatto)</option>
-                            <option value="fruizione">➖ Fruizione (Recupero Ore / Permesso)</option>
+                            <option value="accumulo"> Accumulo (Straordinario Fatto)</option>
+                            <option value="fruizione"> Fruizione (Recupero Ore / Permesso)</option>
                         </select>
                     </div>
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <label class="form-label text-muted small">Ore</label>
+                            <label class="form-label">Ore</label>
                             <input type="number" id="recHours" class="form-control" min="0" placeholder="0" required>
                         </div>
                         <div class="col-6">
-                            <label class="form-label text-muted small">Minuti</label>
+                            <label class="form-label">Minuti</label>
                             <input type="number" id="recMinutes" class="form-control" min="0" max="59" placeholder="0" required>
                         </div>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label text-muted small">Note / Causale (Opzionale)</label>
+                        <label class="form-label">Note / Causale (Opzionale)</label>
                         <input type="text" id="recNotes" class="form-control" placeholder="Es. Progetto X, Visita medica...">
                     </div>
                     <button type="submit" class="btn btn-custom btn-primary-custom w-100 justify-content-center">
@@ -408,7 +519,7 @@
                             </tr>
                         </thead>
                         <tbody id="registryTableBody">
-                            </tbody>
+                        </tbody>
                     </table>
                     <div id="noDataPlaceholder" class="text-center py-5 text-muted">
                         <i class="fas fa-folder-open fa-3x mb-3 opacity-30"></i>
@@ -427,7 +538,8 @@
 
 <script>
 // STORAGE MANAGEMENT
-const STORAGE_KEY = 'timebridge_records_v71';
+const STORAGE_KEY = 'timebridge_records_v72';
+const USER_INFO_KEY = 'timebridge_userinfo_v72';
 let records = [];
 
 // Caricamento iniziale
@@ -444,8 +556,37 @@ document.addEventListener('DOMContentLoaded', () => {
             records = [];
         }
     }
+
+    // Carica dati utente
+    const userInfo = localStorage.getItem(USER_INFO_KEY);
+    if (userInfo) {
+        try {
+            const data = JSON.parse(userInfo);
+            document.getElementById('userFirstName').value = data.firstName || '';
+            document.getElementById('userLastName').value = data.lastName || '';
+            document.getElementById('userRole').value = data.role || '';
+        } catch(e) {
+            console.log('Errore nel caricamento dei dati utente');
+        }
+    }
+
+    // Salva dati utente quando vengono modificati
+    document.getElementById('userFirstName').addEventListener('change', saveUserInfo);
+    document.getElementById('userLastName').addEventListener('change', saveUserInfo);
+    document.getElementById('userRole').addEventListener('change', saveUserInfo);
+
     updateUI();
 });
+
+// Salva i dati utente
+function saveUserInfo() {
+    const userData = {
+        firstName: document.getElementById('userFirstName').value,
+        lastName: document.getElementById('userLastName').value,
+        role: document.getElementById('userRole').value
+    };
+    localStorage.setItem(USER_INFO_KEY, JSON.stringify(userData));
+}
 
 // Salva Record
 function saveRecord(e) {
@@ -610,9 +751,23 @@ function formatDateString(dateStr) {
     return `${parts[2]}/${parts[1]}/${parts[0]}`;
 }
 
-// Costruzione Template di Stampa Professionale A4 Alternativo
+function getRoleLabel(roleValue) {
+    const roles = {
+        'assistente-tecnico': 'Assistente Tecnico',
+        'assistente-amministrativo': 'Assistente Amministrativo',
+        'collaboratore-scolastico': 'Collaboratore Scolastico'
+    };
+    return roles[roleValue] || '---';
+}
+
+// Costruzione Template di Stampa Professionale A4
 function buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins) {
     const printContainer = document.getElementById('printTemplate');
+    
+    const firstName = document.getElementById('userFirstName').value || '---';
+    const lastName = document.getElementById('userLastName').value || '---';
+    const role = document.getElementById('userRole').value;
+    const roleLabel = getRoleLabel(role);
     
     let accumuloRows = '';
     let fruizioneRows = '';
@@ -654,10 +809,16 @@ function buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins) {
             <p>Rendiconto Personale Dipendente</p>
         </div>
 
+        <div class="print-user-info">
+            <div class="print-user-info-item"><strong>Dipendente:</strong> ${lastName} ${firstName}</div>
+            <div class="print-user-info-item"><strong>Ruolo:</strong> ${roleLabel}</div>
+            <div class="print-user-info-item"><strong>Data Generazione Report:</strong> ${new Date().toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+        </div>
+
         <div class="print-grid">
-            <div class="print-grid-item"><strong>Documento di:</strong> Dipendente Interno</div>
             <div class="print-grid-item"><strong>Stato Registro:</strong> Attivo / Verificato</div>
             <div class="print-grid-item"><strong>Totale Voci:</strong> ${records.length} record</div>
+            <div class="print-grid-item"><strong>Versione:</strong> v7.2 PRO</div>
         </div>
 
         <div class="print-section">
@@ -709,7 +870,7 @@ function buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins) {
         <div class="print-footer">
             <div class="print-footer-line">Documento ufficiale generato il ${new Date().toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
             <div class="print-footer-line">Sviluppato da Carmelo Vomero - Assistente Tecnico Informatico</div>
-            <div class="print-footer-line">TimeBridge - Sistema Gestione Ore Automatica V71 PRO</div>
+            <div class="print-footer-line">TimeBridge - Sistema Gestione Ore Automatica V72 PRO</div>
         </div>
     `;
 }
