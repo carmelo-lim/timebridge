@@ -188,59 +188,70 @@
             color: #f8fafc;
         }
 
-        /* TABELLA RESPONSIVE */
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        /* TABELLA RESPONSIVE - CARD LAYOUT SU MOBILE */
+        .table-responsive-custom {
+            overflow: visible;
         }
 
-        .table-custom {
-            color: #cbd5e1;
-            margin-bottom: 0;
-        }
-
-        .table-custom th {
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
-            padding: 1rem 0.5rem;
-            white-space: nowrap;
-        }
-
-        .table-custom td {
-            padding: 1rem 0.5rem;
-            vertical-align: middle;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .table-custom tbody tr:hover {
+        .registry-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1rem;
             background: rgba(255, 255, 255, 0.02);
+            transition: var(--transition);
         }
 
-        .table-custom .col-data {
-            min-width: 90px;
+        .registry-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(14, 165, 233, 0.2);
+        }
+
+        .registry-item-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .registry-item-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+
+        .registry-item-value {
+            font-size: 0.95rem;
             font-weight: 600;
+            color: #f8fafc;
         }
 
-        .table-custom .col-tipo {
-            min-width: 100px;
+        .registry-item-date {
+            grid-column: 1;
         }
 
-        .table-custom .col-durata {
-            min-width: 80px;
-            font-weight: 600;
+        .registry-item-type {
+            grid-column: 2;
         }
 
-        .table-custom .col-note {
-            min-width: 150px;
+        .registry-item-duration {
+            grid-column: 1;
         }
 
-        .table-custom .col-actions {
-            min-width: 50px;
-            text-align: right;
+        .registry-item-notes {
+            grid-column: 2;
+            word-break: break-word;
+        }
+
+        .registry-item-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .badge-custom {
@@ -248,7 +259,9 @@
             border-radius: 8px;
             font-weight: 600;
             font-size: 0.75rem;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
             white-space: nowrap;
         }
 
@@ -266,45 +279,64 @@
             transition: var(--transition);
             background: rgba(255, 255, 255, 0.05);
             color: #cbd5e1;
+            cursor: pointer;
         }
 
         .btn-action-danger:hover { background: var(--danger); color: white; }
         .btn-action-primary:hover { background: var(--primary); color: white; }
 
-        @media (max-width: 768px) {
+        /* DESKTOP TABLE VIEW */
+        @media (min-width: 992px) {
+            .registry-list {
+                display: table;
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .registry-item {
+                display: table-row;
+                border: none;
+                padding: 0;
+                margin-bottom: 0;
+                background: transparent;
+            }
+
+            .registry-item:hover {
+                background: rgba(255, 255, 255, 0.02);
+            }
+
+            .registry-item-field {
+                display: table-cell;
+                padding: 1rem 0.75rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                vertical-align: middle;
+                flex-direction: row;
+            }
+
+            .registry-item-label {
+                display: none;
+            }
+
+            .registry-item-date,
+            .registry-item-type,
+            .registry-item-duration,
+            .registry-item-notes,
+            .registry-item-actions {
+                grid-column: auto;
+            }
+
+            .registry-item-actions {
+                border-top: none;
+                padding: 1rem 0.75rem;
+            }
+        }
+
+        @media (max-width: 991px) {
             .main-container { padding: 1rem 0.5rem; }
             .glass-card { padding: 1rem; border-radius: 12px; }
             .stat-card { padding: 0.75rem; }
             .stat-value { font-size: 1.35rem; }
-            .table-responsive { border: 0; }
             .user-info-card { padding: 1rem; }
-            
-            .table-custom th {
-                padding: 0.75rem 0.25rem;
-                font-size: 0.7rem;
-            }
-            
-            .table-custom td {
-                padding: 0.75rem 0.25rem;
-                font-size: 0.85rem;
-            }
-
-            .table-custom .col-data {
-                min-width: 75px;
-            }
-
-            .table-custom .col-tipo {
-                min-width: 85px;
-            }
-
-            .table-custom .col-durata {
-                min-width: 70px;
-            }
-
-            .table-custom .col-note {
-                min-width: 120px;
-                display: none;
-            }
         }
 
         /* STILI SOLO PER LA STAMPA OCCULTATI IN SCHERMO */
@@ -445,7 +477,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
             <h1 class="page-title mb-1">TimeBridge</h1>
-            <p class="text-muted mb-0 d-none d-sm-block">Registro Straordinari Personale v7.2 <span class="badge bg-info text-dark ms-2">PRO</span></p>
+            <p class="text-muted mb-0 d-none d-sm-block">Registro Straordinari Personale v7.3 <span class="badge bg-info text-dark ms-2">PRO</span></p>
         </div>
         <div class="d-flex gap-2">
             <button class="btn btn-custom btn-light" onclick="window.print()">
@@ -566,24 +598,12 @@
                     <span id="recordCount" class="badge bg-secondary">0 Record totali</span>
                 </div>
                 
-                <div class="table-responsive flex-grow-1">
-                    <table class="table table-custom">
-                        <thead>
-                            <tr>
-                                <th class="col-data">Data</th>
-                                <th class="col-tipo">Tipo</th>
-                                <th class="col-durata">Durata</th>
-                                <th class="col-note">Note / Causale</th>
-                                <th class="col-actions">Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody id="registryTableBody">
-                        </tbody>
-                    </table>
+                <div class="table-responsive-custom flex-grow-1">
                     <div id="noDataPlaceholder" class="text-center py-5 text-muted">
                         <i class="fas fa-folder-open fa-3x mb-3 opacity-30"></i>
                         <p class="m-0">Nessun record inserito nel registro.</p>
                     </div>
+                    <div id="registryListContainer" class="registry-list"></div>
                 </div>
             </div>
         </div>
@@ -597,8 +617,8 @@
 
 <script>
 // STORAGE MANAGEMENT
-const STORAGE_KEY = 'timebridge_records_v72';
-const USER_INFO_KEY = 'timebridge_userinfo_v72';
+const STORAGE_KEY = 'timebridge_records_v73';
+const USER_INFO_KEY = 'timebridge_userinfo_v73';
 let records = [];
 
 // Caricamento iniziale
@@ -734,11 +754,11 @@ function saveToStorage() {
 
 // Aggiorna l'Interfaccia Utente
 function updateUI() {
-    const tbody = document.getElementById('registryTableBody');
+    const listContainer = document.getElementById('registryListContainer');
     const placeholder = document.getElementById('noDataPlaceholder');
     const counter = document.getElementById('recordCount');
     
-    tbody.innerHTML = '';
+    listContainer.innerHTML = '';
     counter.innerText = `${records.length} Record totali`;
 
     let totalAccumulatedMins = 0;
@@ -754,24 +774,37 @@ function updateUI() {
             if(r.type === 'accumulo') totalAccumulatedMins += currentMins;
             else totalUsedMins += currentMins;
 
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td class="col-data"><strong class="text-white">${formatDateString(r.date)}</strong></td>
-                <td class="col-tipo">
-                    <span class="badge-custom ${r.type === 'accumulo' ? 'badge-plus' : 'badge-minus'}">
-                        <i class="fas ${r.type === 'accumulo' ? 'fa-plus' : 'fa-minus'} me-1"></i>
-                        ${r.type === 'accumulo' ? 'Accumulo' : 'Fruizione'}
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'registry-item';
+            itemDiv.innerHTML = `
+                <div class="registry-item-field registry-item-date">
+                    <span class="registry-item-label">Data</span>
+                    <span class="registry-item-value">${formatDateString(r.date)}</span>
+                </div>
+                <div class="registry-item-field registry-item-type">
+                    <span class="registry-item-label">Tipo</span>
+                    <span class="registry-item-value">
+                        <span class="badge-custom ${r.type === 'accumulo' ? 'badge-plus' : 'badge-minus'}">
+                            <i class="fas ${r.type === 'accumulo' ? 'fa-plus' : 'fa-minus'}"></i>
+                            ${r.type === 'accumulo' ? 'Accumulo' : 'Fruizione'}
+                        </span>
                     </span>
-                </td>
-                <td class="col-durata"><span class="font-weight-600">${formatTime(currentMins)}</span></td>
-                <td class="col-note"><span class="text-muted small">${r.notes}</span></td>
-                <td class="col-actions">
+                </div>
+                <div class="registry-item-field registry-item-duration">
+                    <span class="registry-item-label">Durata</span>
+                    <span class="registry-item-value">${formatTime(currentMins)}</span>
+                </div>
+                <div class="registry-item-field registry-item-notes">
+                    <span class="registry-item-label">Note / Causale</span>
+                    <span class="registry-item-value" style="color: var(--text-muted); font-size: 0.85rem;">${r.notes}</span>
+                </div>
+                <div class="registry-item-field registry-item-actions">
                     <button class="btn-action btn-action-danger" onclick="deleteRecord(${r.id})" title="Elimina">
                         <i class="fas fa-trash"></i>
                     </button>
-                </td>
+                </div>
             `;
-            tbody.appendChild(tr);
+            listContainer.appendChild(itemDiv);
         });
     }
 
@@ -877,7 +910,7 @@ function buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins) {
         <div class="print-grid">
             <div class="print-grid-item"><strong>Stato Registro:</strong> Attivo / Verificato</div>
             <div class="print-grid-item"><strong>Totale Voci:</strong> ${records.length} record</div>
-            <div class="print-grid-item"><strong>Versione:</strong> v7.2 PRO</div>
+            <div class="print-grid-item"><strong>Versione:</strong> v7.3 PRO</div>
         </div>
 
         <div class="print-section">
@@ -929,7 +962,7 @@ function buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins) {
         <div class="print-footer">
             <div class="print-footer-line">Documento ufficiale generato il ${new Date().toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
             <div class="print-footer-line">Sviluppato da Carmelo Vomero - Assistente Tecnico Informatico</div>
-            <div class="print-footer-line">TimeBridge - Sistema Gestione Ore Automatica V72 PRO</div>
+            <div class="print-footer-line">TimeBridge - Sistema Gestione Ore Automatica V73 PRO</div>
         </div>
     `;
 }
