@@ -188,6 +188,12 @@
             color: #f8fafc;
         }
 
+        /* TABELLA RESPONSIVE */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         .table-custom {
             color: #cbd5e1;
             margin-bottom: 0;
@@ -200,11 +206,12 @@
             letter-spacing: 1px;
             color: var(--text-muted);
             border-bottom: 2px solid rgba(255, 255, 255, 0.08);
-            padding: 1rem;
+            padding: 1rem 0.5rem;
+            white-space: nowrap;
         }
 
         .table-custom td {
-            padding: 1rem;
+            padding: 1rem 0.5rem;
             vertical-align: middle;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
@@ -213,11 +220,36 @@
             background: rgba(255, 255, 255, 0.02);
         }
 
+        .table-custom .col-data {
+            min-width: 90px;
+            font-weight: 600;
+        }
+
+        .table-custom .col-tipo {
+            min-width: 100px;
+        }
+
+        .table-custom .col-durata {
+            min-width: 80px;
+            font-weight: 600;
+        }
+
+        .table-custom .col-note {
+            min-width: 150px;
+        }
+
+        .table-custom .col-actions {
+            min-width: 50px;
+            text-align: right;
+        }
+
         .badge-custom {
             padding: 0.4rem 0.75rem;
             border-radius: 8px;
             font-weight: 600;
             font-size: 0.75rem;
+            display: inline-block;
+            white-space: nowrap;
         }
 
         .badge-plus { background: rgba(16, 185, 129, 0.15); color: #10b981; }
@@ -246,6 +278,33 @@
             .stat-value { font-size: 1.35rem; }
             .table-responsive { border: 0; }
             .user-info-card { padding: 1rem; }
+            
+            .table-custom th {
+                padding: 0.75rem 0.25rem;
+                font-size: 0.7rem;
+            }
+            
+            .table-custom td {
+                padding: 0.75rem 0.25rem;
+                font-size: 0.85rem;
+            }
+
+            .table-custom .col-data {
+                min-width: 75px;
+            }
+
+            .table-custom .col-tipo {
+                min-width: 85px;
+            }
+
+            .table-custom .col-durata {
+                min-width: 70px;
+            }
+
+            .table-custom .col-note {
+                min-width: 120px;
+                display: none;
+            }
         }
 
         /* STILI SOLO PER LA STAMPA OCCULTATI IN SCHERMO */
@@ -511,11 +570,11 @@
                     <table class="table table-custom">
                         <thead>
                             <tr>
-                                <th>Data</th>
-                                <th>Tipo</th>
-                                <th>Durata</th>
-                                <th>Note / Causale</th>
-                                <th class="text-end">Azioni</th>
+                                <th class="col-data">Data</th>
+                                <th class="col-tipo">Tipo</th>
+                                <th class="col-durata">Durata</th>
+                                <th class="col-note">Note / Causale</th>
+                                <th class="col-actions">Azioni</th>
                             </tr>
                         </thead>
                         <tbody id="registryTableBody">
@@ -697,16 +756,16 @@ function updateUI() {
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><strong class="text-white">${formatDateString(r.date)}</strong></td>
-                <td>
+                <td class="col-data"><strong class="text-white">${formatDateString(r.date)}</strong></td>
+                <td class="col-tipo">
                     <span class="badge-custom ${r.type === 'accumulo' ? 'badge-plus' : 'badge-minus'}">
                         <i class="fas ${r.type === 'accumulo' ? 'fa-plus' : 'fa-minus'} me-1"></i>
                         ${r.type === 'accumulo' ? 'Accumulo' : 'Fruizione'}
                     </span>
                 </td>
-                <td><span class="font-weight-600">${formatTime(currentMins)}</span></td>
-                <td class="text-wrap" style="max-width: 250px;"><span class="text-muted small">${r.notes}</span></td>
-                <td class="text-end">
+                <td class="col-durata"><span class="font-weight-600">${formatTime(currentMins)}</span></td>
+                <td class="col-note"><span class="text-muted small">${r.notes}</span></td>
+                <td class="col-actions">
                     <button class="btn-action btn-action-danger" onclick="deleteRecord(${r.id})" title="Elimina">
                         <i class="fas fa-trash"></i>
                     </button>
