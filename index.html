@@ -188,70 +188,29 @@
             color: #f8fafc;
         }
 
-        /* TABELLA RESPONSIVE - CARD LAYOUT SU MOBILE */
-        .table-responsive-custom {
-            overflow: visible;
+        .table-custom {
+            color: #cbd5e1;
+            margin-bottom: 0;
         }
 
-        .registry-item {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            padding: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            background: rgba(255, 255, 255, 0.02);
-            transition: var(--transition);
-        }
-
-        .registry-item:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(14, 165, 233, 0.2);
-        }
-
-        .registry-item-field {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .registry-item-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.3rem;
-        }
-
-        .registry-item-value {
-            font-size: 0.95rem;
+        .table-custom th {
             font-weight: 600;
-            color: #f8fafc;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+            padding: 1rem;
         }
 
-        .registry-item-date {
-            grid-column: 1;
+        .table-custom td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .registry-item-type {
-            grid-column: 2;
-        }
-
-        .registry-item-duration {
-            grid-column: 1;
-        }
-
-        .registry-item-notes {
-            grid-column: 2;
-            word-break: break-word;
-        }
-
-        .registry-item-actions {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: flex-end;
-            padding-top: 0.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        .table-custom tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .badge-custom {
@@ -259,10 +218,6 @@
             border-radius: 8px;
             font-weight: 600;
             font-size: 0.75rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            white-space: nowrap;
         }
 
         .badge-plus { background: rgba(16, 185, 129, 0.15); color: #10b981; }
@@ -279,68 +234,71 @@
             transition: var(--transition);
             background: rgba(255, 255, 255, 0.05);
             color: #cbd5e1;
-            cursor: pointer;
         }
 
         .btn-action-danger:hover { background: var(--danger); color: white; }
         .btn-action-primary:hover { background: var(--primary); color: white; }
 
-        /* DESKTOP TABLE VIEW */
-        @media (min-width: 992px) {
-            .registry-list {
-                display: table;
-                width: 100%;
-                border-collapse: collapse;
-            }
+        .backup-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: #10b981;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
 
-            .registry-item {
-                display: table-row;
-                border: none;
-                padding: 0;
-                margin-bottom: 0;
-                background: transparent;
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
             }
-
-            .registry-item:hover {
-                background: rgba(255, 255, 255, 0.02);
-            }
-
-            .registry-item-field {
-                display: table-cell;
-                padding: 1rem 0.75rem;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                vertical-align: middle;
-                flex-direction: row;
-            }
-
-            .registry-item-label {
-                display: none;
-            }
-
-            .registry-item-date,
-            .registry-item-type,
-            .registry-item-duration,
-            .registry-item-notes,
-            .registry-item-actions {
-                grid-column: auto;
-            }
-
-            .registry-item-actions {
-                border-top: none;
-                padding: 1rem 0.75rem;
+            to {
+                transform: translateX(0);
+                opacity: 1;
             }
         }
 
-        @media (max-width: 991px) {
+        .backup-indicator.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #10b981;
+        }
+
+        .backup-indicator.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        @media (max-width: 768px) {
             .main-container { padding: 1rem 0.5rem; }
             .glass-card { padding: 1rem; border-radius: 12px; }
             .stat-card { padding: 0.75rem; }
             .stat-value { font-size: 1.35rem; }
+            .table-responsive { border: 0; }
             .user-info-card { padding: 1rem; }
+            .backup-indicator {
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.75rem;
+                padding: 0.5rem 0.75rem;
+            }
         }
 
         /* STILI SOLO PER LA STAMPA OCCULTATI IN SCHERMO */
         #printTemplate {
+            display: none;
+        }
+
+        #fileInput {
             display: none;
         }
 
@@ -477,11 +435,17 @@
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
             <h1 class="page-title mb-1">TimeBridge</h1>
-            <p class="text-muted mb-0 d-none d-sm-block">Registro Straordinari Personale v7.3 <span class="badge bg-info text-dark ms-2">PRO</span></p>
+            <p class="text-muted mb-0 d-none d-sm-block">Registro Straordinari Personale v7.2 <span class="badge bg-info text-dark ms-2">PRO</span></p>
         </div>
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2 flex-wrap">
             <button class="btn btn-custom btn-light" onclick="window.print()">
                 <i class="fas fa-print text-dark"></i> <span class="d-none d-md-inline">Stampa / PDF</span>
+            </button>
+            <button class="btn btn-custom btn-success" onclick="exportData()">
+                <i class="fas fa-download"></i> <span class="d-none d-md-inline">Esporta</span>
+            </button>
+            <button class="btn btn-custom btn-info" onclick="importData()">
+                <i class="fas fa-upload"></i> <span class="d-none d-md-inline">Importa</span>
             </button>
             <button class="btn btn-custom btn-danger" onclick="clearAllData()">
                 <i class="fas fa-trash-alt"></i> <span class="d-none d-md-inline">Formatta</span>
@@ -598,12 +562,24 @@
                     <span id="recordCount" class="badge bg-secondary">0 Record totali</span>
                 </div>
                 
-                <div class="table-responsive-custom flex-grow-1">
+                <div class="table-responsive flex-grow-1">
+                    <table class="table table-custom">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Tipo</th>
+                                <th>Durata</th>
+                                <th>Note / Causale</th>
+                                <th class="text-end">Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registryTableBody">
+                        </tbody>
+                    </table>
                     <div id="noDataPlaceholder" class="text-center py-5 text-muted">
                         <i class="fas fa-folder-open fa-3x mb-3 opacity-30"></i>
                         <p class="m-0">Nessun record inserito nel registro.</p>
                     </div>
-                    <div id="registryListContainer" class="registry-list"></div>
                 </div>
             </div>
         </div>
@@ -611,14 +587,19 @@
 </div>
 
 <div id="printTemplate"></div>
+<input type="file" id="fileInput" accept=".json" />
+<div id="backupIndicator" class="backup-indicator success">
+    <i class="fas fa-check-circle"></i> Backup automatico salvato
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 // STORAGE MANAGEMENT
-const STORAGE_KEY = 'timebridge_records_v73';
-const USER_INFO_KEY = 'timebridge_userinfo_v73';
+const STORAGE_KEY = 'timebridge_records_v72';
+const USER_INFO_KEY = 'timebridge_userinfo_v72';
+const BACKUP_KEY = 'timebridge_lastbackup_v72';
 let records = [];
 
 // Caricamento iniziale
@@ -655,7 +636,62 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('userRole').addEventListener('change', saveUserInfo);
 
     updateUI();
+
+    // Ascolta il primo movimento del mouse o tocco per attivare il backup
+    document.addEventListener('mousemove', initAutoBackup, { once: true });
+    document.addEventListener('touchstart', initAutoBackup, { once: true });
 });
+
+// SISTEMA DI AUTO-BACKUP
+let autoBackupInitialized = false;
+
+function initAutoBackup() {
+    if (autoBackupInitialized) return;
+    autoBackupInitialized = true;
+
+    // Backup ogni 5 minuti se ci sono cambiamenti
+    setInterval(() => {
+        performAutoBackup();
+    }, 300000); // 300000 ms = 5 minuti
+
+    // Backup prima di chiudere la pagina
+    window.addEventListener('beforeunload', (e) => {
+        performAutoBackup();
+    });
+}
+
+function performAutoBackup() {
+    const backupData = {
+        records: records,
+        userInfo: {
+            firstName: document.getElementById('userFirstName').value,
+            lastName: document.getElementById('userLastName').value,
+            role: document.getElementById('userRole').value
+        },
+        timestamp: new Date().toISOString()
+    };
+
+    try {
+        localStorage.setItem(BACKUP_KEY, JSON.stringify(backupData));
+        showBackupIndicator('success', 'Backup automatico salvato');
+    } catch(e) {
+        console.error('Errore nel backup automatico:', e);
+        showBackupIndicator('error', 'Errore nel backup');
+    }
+}
+
+function showBackupIndicator(type, message) {
+    const indicator = document.getElementById('backupIndicator');
+    indicator.className = `backup-indicator ${type}`;
+    indicator.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+    indicator.style.display = 'flex';
+    indicator.style.alignItems = 'center';
+    indicator.style.gap = '0.5rem';
+
+    setTimeout(() => {
+        indicator.style.display = 'none';
+    }, 3000);
+}
 
 // Salva i dati utente
 function saveUserInfo() {
@@ -665,7 +701,116 @@ function saveUserInfo() {
         role: document.getElementById('userRole').value
     };
     localStorage.setItem(USER_INFO_KEY, JSON.stringify(userData));
+    performAutoBackup();
 }
+
+// Esporta i dati in JSON
+function exportData() {
+    const userInfo = {
+        firstName: document.getElementById('userFirstName').value,
+        lastName: document.getElementById('userLastName').value,
+        role: document.getElementById('userRole').value
+    };
+
+    const exportObject = {
+        version: '7.2',
+        exportDate: new Date().toISOString(),
+        userInfo: userInfo,
+        records: records
+    };
+
+    const dataStr = JSON.stringify(exportObject, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    
+    const firstName = userInfo.firstName || 'NoName';
+    const lastName = userInfo.lastName || 'NoSurname';
+    const exportDate = new Date().toLocaleDateString('it-IT').replace(/\//g, '-');
+    
+    link.href = url;
+    link.download = `TimeBridge_${lastName}_${firstName}_${exportDate}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    Swal.fire({
+        icon: 'success',
+        title: 'Esportazione Completata',
+        text: 'I dati sono stati salvati in un file JSON',
+        timer: 2000,
+        showConfirmButton: false
+    });
+}
+
+// Importa i dati da JSON
+function importData() {
+    document.getElementById('fileInput').click();
+}
+
+document.getElementById('fileInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        try {
+            const importedData = JSON.parse(event.target.result);
+
+            if (!importedData.records || !Array.isArray(importedData.records)) {
+                throw new Error('Formato file non valido');
+            }
+
+            Swal.fire({
+                title: 'Conferma Importazione',
+                html: `
+                    <div style="text-align: left;">
+                        <p><strong>Nome:</strong> ${importedData.userInfo?.lastName} ${importedData.userInfo?.firstName}</p>
+                        <p><strong>Record trovati:</strong> ${importedData.records.length}</p>
+                        <p style="color: #ff6b6b; margin-top: 15px;"><strong>⚠️ Attenzione:</strong> I dati attuali verranno sovrascritti!</p>
+                    </div>
+                `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#0ea5e9',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Importa',
+                cancelButtonText: 'Annulla'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Importa i dati
+                    records = importedData.records;
+                    document.getElementById('userFirstName').value = importedData.userInfo?.firstName || '';
+                    document.getElementById('userLastName').value = importedData.userInfo?.lastName || '';
+                    document.getElementById('userRole').value = importedData.userInfo?.role || '';
+
+                    saveToStorage();
+                    saveUserInfo();
+                    updateUI();
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Importazione Riuscita',
+                        text: `Caricati ${importedData.records.length} record`,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        } catch(error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Errore Importazione',
+                text: 'Il file non è valido o non è un backup TimeBridge',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+    };
+    reader.readAsText(file);
+    e.target.value = ''; // Reset per permettere il ricaricamento dello stesso file
+});
 
 // Salva Record
 function saveRecord(e) {
@@ -704,6 +849,7 @@ function saveRecord(e) {
     document.getElementById('recNotes').value = '';
     
     Swal.fire({ icon: 'success', title: 'Salvato', text: 'Record inserito con successo!', timer: 1500, showConfirmButton: false });
+    performAutoBackup();
 }
 
 // Elimina singolo record
@@ -723,6 +869,7 @@ function deleteRecord(id) {
             saveToStorage();
             updateUI();
             Swal.fire({ icon: 'success', title: 'Eliminato', text: 'Il record è stato rimosso.', timer: 1200, showConfirmButton: false });
+            performAutoBackup();
         }
     });
 }
@@ -744,6 +891,7 @@ function clearAllData() {
             saveToStorage();
             updateUI();
             Swal.fire({ icon: 'success', title: 'Formattato', text: 'Il registro è tornato vuoto.', timer: 1500, showConfirmButton: false });
+            performAutoBackup();
         }
     });
 }
@@ -754,11 +902,11 @@ function saveToStorage() {
 
 // Aggiorna l'Interfaccia Utente
 function updateUI() {
-    const listContainer = document.getElementById('registryListContainer');
+    const tbody = document.getElementById('registryTableBody');
     const placeholder = document.getElementById('noDataPlaceholder');
     const counter = document.getElementById('recordCount');
     
-    listContainer.innerHTML = '';
+    tbody.innerHTML = '';
     counter.innerText = `${records.length} Record totali`;
 
     let totalAccumulatedMins = 0;
@@ -774,37 +922,24 @@ function updateUI() {
             if(r.type === 'accumulo') totalAccumulatedMins += currentMins;
             else totalUsedMins += currentMins;
 
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'registry-item';
-            itemDiv.innerHTML = `
-                <div class="registry-item-field registry-item-date">
-                    <span class="registry-item-label">Data</span>
-                    <span class="registry-item-value">${formatDateString(r.date)}</span>
-                </div>
-                <div class="registry-item-field registry-item-type">
-                    <span class="registry-item-label">Tipo</span>
-                    <span class="registry-item-value">
-                        <span class="badge-custom ${r.type === 'accumulo' ? 'badge-plus' : 'badge-minus'}">
-                            <i class="fas ${r.type === 'accumulo' ? 'fa-plus' : 'fa-minus'}"></i>
-                            ${r.type === 'accumulo' ? 'Accumulo' : 'Fruizione'}
-                        </span>
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong class="text-white">${formatDateString(r.date)}</strong></td>
+                <td>
+                    <span class="badge-custom ${r.type === 'accumulo' ? 'badge-plus' : 'badge-minus'}">
+                        <i class="fas ${r.type === 'accumulo' ? 'fa-plus' : 'fa-minus'} me-1"></i>
+                        ${r.type === 'accumulo' ? 'Accumulo' : 'Fruizione'}
                     </span>
-                </div>
-                <div class="registry-item-field registry-item-duration">
-                    <span class="registry-item-label">Durata</span>
-                    <span class="registry-item-value">${formatTime(currentMins)}</span>
-                </div>
-                <div class="registry-item-field registry-item-notes">
-                    <span class="registry-item-label">Note / Causale</span>
-                    <span class="registry-item-value" style="color: var(--text-muted); font-size: 0.85rem;">${r.notes}</span>
-                </div>
-                <div class="registry-item-field registry-item-actions">
+                </td>
+                <td><span class="font-weight-600">${formatTime(currentMins)}</span></td>
+                <td class="text-wrap" style="max-width: 250px;"><span class="text-muted small">${r.notes}</span></td>
+                <td class="text-end">
                     <button class="btn-action btn-action-danger" onclick="deleteRecord(${r.id})" title="Elimina">
                         <i class="fas fa-trash"></i>
                     </button>
-                </div>
+                </td>
             `;
-            listContainer.appendChild(itemDiv);
+            tbody.appendChild(tr);
         });
     }
 
@@ -910,7 +1045,7 @@ function buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins) {
         <div class="print-grid">
             <div class="print-grid-item"><strong>Stato Registro:</strong> Attivo / Verificato</div>
             <div class="print-grid-item"><strong>Totale Voci:</strong> ${records.length} record</div>
-            <div class="print-grid-item"><strong>Versione:</strong> v7.3 PRO</div>
+            <div class="print-grid-item"><strong>Versione:</strong> v7.2 PRO</div>
         </div>
 
         <div class="print-section">
@@ -962,7 +1097,7 @@ function buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins) {
         <div class="print-footer">
             <div class="print-footer-line">Documento ufficiale generato il ${new Date().toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
             <div class="print-footer-line">Sviluppato da Carmelo Vomero - Assistente Tecnico Informatico</div>
-            <div class="print-footer-line">TimeBridge - Sistema Gestione Ore Automatica V73 PRO</div>
+            <div class="print-footer-line">TimeBridge - Sistema Gestione Ore Automatica V72 PRO</div>
         </div>
     `;
 }
