@@ -188,10 +188,12 @@
             color: #f8fafc;
         }
 
+        /* TABELLA DESKTOP */
         .table-custom {
             color: #cbd5e1;
             margin-bottom: 0;
             width: 100%;
+            border-collapse: collapse;
         }
 
         .table-custom th {
@@ -201,15 +203,13 @@
             letter-spacing: 1px;
             color: var(--text-muted);
             border-bottom: 2px solid rgba(255, 255, 255, 0.08);
-            padding: 0.75rem 0.5rem;
-            white-space: nowrap;
+            padding: 1rem;
         }
 
         .table-custom td {
-            padding: 0.75rem 0.5rem;
+            padding: 1rem;
             vertical-align: middle;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            word-break: break-word;
         }
 
         .table-custom tbody tr:hover {
@@ -244,6 +244,46 @@
 
         .btn-action-danger:hover { background: var(--danger); color: white; }
         .btn-action-primary:hover { background: var(--primary); color: white; }
+
+        /* CARD VIEW PER MOBILE */
+        .record-card {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .record-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(14, 165, 233, 0.2);
+        }
+
+        .record-card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .record-card-row:last-child {
+            border-bottom: none;
+        }
+
+        .record-card-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .record-card-value {
+            color: #f8fafc;
+            font-weight: 500;
+        }
 
         .backup-indicator {
             position: fixed;
@@ -284,72 +324,37 @@
             color: #ef4444;
         }
 
-        /* Stili responsive per la tabella */
-        @media (max-width: 992px) {
-            .table-custom th {
-                font-size: 0.7rem;
-                padding: 0.6rem 0.4rem;
-            }
-
-            .table-custom td {
-                padding: 0.6rem 0.4rem;
-                font-size: 0.9rem;
-            }
-
-            .badge-custom {
-                font-size: 0.7rem;
-                padding: 0.35rem 0.6rem;
-            }
-
-            .btn-action {
-                width: 28px;
-                height: 28px;
-            }
-
-            .table-custom td:nth-child(4) {
-                max-width: 120px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-        }
-
+        /* RESPONSIVE DESIGN */
         @media (max-width: 768px) {
-            .main-container { padding: 1rem 0.5rem; }
-            .glass-card { padding: 1rem; border-radius: 12px; }
-            .stat-card { padding: 0.75rem; }
-            .stat-value { font-size: 1.35rem; }
-            .user-info-card { padding: 1rem; }
+            .main-container { 
+                padding: 1rem 0.5rem; 
+            }
             
+            .glass-card { 
+                padding: 1rem; 
+                border-radius: 12px; 
+            }
+            
+            .stat-card { 
+                padding: 0.75rem; 
+            }
+            
+            .stat-value { 
+                font-size: 1.35rem; 
+            }
+            
+            .user-info-card { 
+                padding: 1rem; 
+            }
+
+            /* NASCONDI LA TABELLA DESKTOP SU MOBILE */
             .table-responsive {
-                border: 0;
-                font-size: 0.85rem;
+                display: none;
             }
 
-            .table-custom th {
-                font-size: 0.65rem;
-                padding: 0.5rem 0.3rem;
-            }
-
-            .table-custom td {
-                padding: 0.5rem 0.3rem;
-                font-size: 0.8rem;
-            }
-
-            .badge-custom {
-                font-size: 0.65rem;
-                padding: 0.3rem 0.5rem;
-            }
-
-            .btn-action {
-                width: 26px;
-                height: 26px;
-                font-size: 0.85rem;
-            }
-
-            .table-custom td:nth-child(4) {
-                max-width: 80px;
-                overflow: hidden;
-                text-overflow: ellipsis;
+            /* MOSTRA LE CARD SU MOBILE */
+            .record-card {
+                display: block;
             }
 
             .backup-indicator {
@@ -366,6 +371,10 @@
         }
 
         #fileInput {
+            display: none;
+        }
+
+        #recordsContainerMobile {
             display: none;
         }
 
@@ -629,21 +638,31 @@
                     <span id="recordCount" class="badge bg-secondary">0 Record totali</span>
                 </div>
                 
+                <!-- VISTA DESKTOP - TABELLA -->
                 <div class="table-responsive flex-grow-1">
                     <table class="table table-custom">
                         <thead>
                             <tr>
-                                <th style="min-width: 85px;">Data</th>
-                                <th style="min-width: 90px;">Tipo</th>
-                                <th style="min-width: 75px;">Durata</th>
-                                <th style="min-width: 150px;">Note / Causale</th>
-                                <th class="text-end" style="min-width: 50px;">Azioni</th>
+                                <th>Data</th>
+                                <th>Tipo</th>
+                                <th>Durata</th>
+                                <th>Note / Causale</th>
+                                <th class="text-end">Azioni</th>
                             </tr>
                         </thead>
                         <tbody id="registryTableBody">
                         </tbody>
                     </table>
                     <div id="noDataPlaceholder" class="text-center py-5 text-muted">
+                        <i class="fas fa-folder-open fa-3x mb-3 opacity-30"></i>
+                        <p class="m-0">Nessun record inserito nel registro.</p>
+                    </div>
+                </div>
+
+                <!-- VISTA MOBILE - CARD -->
+                <div id="recordsContainerMobile" class="flex-grow-1">
+                    <div id="recordsCardsContainer"></div>
+                    <div id="noDataPlaceholderMobile" class="text-center py-5 text-muted">
                         <i class="fas fa-folder-open fa-3x mb-3 opacity-30"></i>
                         <p class="m-0">Nessun record inserito nel registro.</p>
                     </div>
@@ -719,7 +738,7 @@ function initAutoBackup() {
     // Backup ogni 5 minuti se ci sono cambiamenti
     setInterval(() => {
         performAutoBackup();
-    }, 300000); // 300000 ms = 5 minuti
+    }, 300000);
 
     // Backup prima di chiudere la pagina
     window.addEventListener('beforeunload', (e) => {
@@ -846,7 +865,6 @@ document.getElementById('fileInput').addEventListener('change', (e) => {
                 cancelButtonText: 'Annulla'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Importa i dati
                     records = importedData.records;
                     document.getElementById('userFirstName').value = importedData.userInfo?.firstName || '';
                     document.getElementById('userLastName').value = importedData.userInfo?.lastName || '';
@@ -904,13 +922,11 @@ function saveRecord(e) {
     };
 
     records.push(newRecord);
-    // Ordina per data decrescente
     records.sort((a, b) => new Date(b.date) - new Date(a.date));
     
     saveToStorage();
     updateUI();
     
-    // Reset parziale form
     document.getElementById('recHours').value = '';
     document.getElementById('recMinutes').value = '';
     document.getElementById('recNotes').value = '';
@@ -967,13 +983,16 @@ function saveToStorage() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
 }
 
-// Aggiorna l'Interfaccia Utente
+// Aggiorna l'Interfaccia Utente - VERSIONE CORRETTADEFAULT
 function updateUI() {
     const tbody = document.getElementById('registryTableBody');
     const placeholder = document.getElementById('noDataPlaceholder');
+    const cardsContainer = document.getElementById('recordsCardsContainer');
+    const placeholderMobile = document.getElementById('noDataPlaceholderMobile');
     const counter = document.getElementById('recordCount');
     
     tbody.innerHTML = '';
+    cardsContainer.innerHTML = '';
     counter.innerText = `${records.length} Record totali`;
 
     let totalAccumulatedMins = 0;
@@ -981,14 +1000,17 @@ function updateUI() {
 
     if (records.length === 0) {
         placeholder.style.display = 'block';
+        placeholderMobile.style.display = 'block';
     } else {
         placeholder.style.display = 'none';
+        placeholderMobile.style.display = 'none';
         
         records.forEach(r => {
             const currentMins = (r.hours * 60) + r.minutes;
             if(r.type === 'accumulo') totalAccumulatedMins += currentMins;
             else totalUsedMins += currentMins;
 
+            // RIGA TABELLA DESKTOP
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td><strong class="text-white">${formatDateString(r.date)}</strong></td>
@@ -1007,12 +1029,46 @@ function updateUI() {
                 </td>
             `;
             tbody.appendChild(tr);
+
+            // CARD MOBILE
+            const card = document.createElement('div');
+            card.className = 'record-card';
+            card.innerHTML = `
+                <div class="record-card-row">
+                    <span class="record-card-label">📅 Data</span>
+                    <span class="record-card-value"><strong>${formatDateString(r.date)}</strong></span>
+                </div>
+                <div class="record-card-row">
+                    <span class="record-card-label">📊 Tipo</span>
+                    <span class="record-card-value">
+                        <span class="badge-custom ${r.type === 'accumulo' ? 'badge-plus' : 'badge-minus'}">
+                            <i class="fas ${r.type === 'accumulo' ? 'fa-plus' : 'fa-minus'} me-1"></i>
+                            ${r.type === 'accumulo' ? 'Accumulo' : 'Fruizione'}
+                        </span>
+                    </span>
+                </div>
+                <div class="record-card-row">
+                    <span class="record-card-label">⏱️ Durata</span>
+                    <span class="record-card-value"><strong>${formatTime(currentMins)}</strong></span>
+                </div>
+                <div class="record-card-row">
+                    <span class="record-card-label">📝 Note</span>
+                    <span class="record-card-value">${r.notes}</span>
+                </div>
+                <div class="record-card-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <span></span>
+                    <button class="btn-action btn-action-danger" onclick="deleteRecord(${r.id})" title="Elimina">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            cardsContainer.appendChild(card);
         });
     }
 
     const balanceMins = totalAccumulatedMins - totalUsedMins;
 
-    // Aggiorna contatori visivi a schermo
+    // Aggiorna contatori visivi
     document.getElementById('statAccumulated').innerText = formatTime(totalAccumulatedMins);
     document.getElementById('statUsed').innerText = formatTime(totalUsedMins);
     
@@ -1027,7 +1083,7 @@ function updateUI() {
         balanceEl.className = 'stat-value text-white';
     }
 
-    // Genera il template di stampa pulito in background per la funzione window.print()
+    // Genera il template di stampa
     buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins);
 }
 
@@ -1122,7 +1178,7 @@ function buildPrintTemplate(totalAccumulatedMins, totalUsedMins, balanceMins) {
                     <tr>
                         <th style="width: 20%;">Data Effettuazione</th>
                         <th style="width: 20%;">Durata Accumulo</th>
-                        <th style="width: 60%;">Causale / Note Attivit</th>
+                        <th style="width: 60%;">Causale / Note Attività</th>
                     </tr>
                 </thead>
                 <tbody>
