@@ -189,6 +189,11 @@
         }
 
         /* TABELLA DESKTOP */
+        .table-wrapper {
+            display: block;
+            width: 100%;
+        }
+
         .table-custom {
             color: #cbd5e1;
             margin-bottom: 0;
@@ -240,14 +245,19 @@
             background: rgba(255, 255, 255, 0.05);
             color: #cbd5e1;
             flex-shrink: 0;
+            cursor: pointer;
         }
 
         .btn-action-danger:hover { background: var(--danger); color: white; }
         .btn-action-primary:hover { background: var(--primary); color: white; }
 
         /* CARD VIEW PER MOBILE */
-        .record-card {
+        .mobile-records-container {
             display: none;
+            width: 100%;
+        }
+
+        .record-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 10px;
@@ -269,7 +279,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .record-card-row:last-child {
+        .record-card-row:last-of-type {
             border-bottom: none;
         }
 
@@ -283,6 +293,7 @@
         .record-card-value {
             color: #f8fafc;
             font-weight: 500;
+            text-align: right;
         }
 
         .backup-indicator {
@@ -348,13 +359,13 @@
             }
 
             /* NASCONDI LA TABELLA DESKTOP SU MOBILE */
-            .table-responsive {
-                display: none;
+            .table-wrapper {
+                display: none !important;
             }
 
             /* MOSTRA LE CARD SU MOBILE */
-            .record-card {
-                display: block;
+            .mobile-records-container {
+                display: block !important;
             }
 
             .backup-indicator {
@@ -371,10 +382,6 @@
         }
 
         #fileInput {
-            display: none;
-        }
-
-        #recordsContainerMobile {
             display: none;
         }
 
@@ -639,28 +646,30 @@
                 </div>
                 
                 <!-- VISTA DESKTOP - TABELLA -->
-                <div class="table-responsive flex-grow-1">
-                    <table class="table table-custom">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Tipo</th>
-                                <th>Durata</th>
-                                <th>Note / Causale</th>
-                                <th class="text-end">Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody id="registryTableBody">
-                        </tbody>
-                    </table>
-                    <div id="noDataPlaceholder" class="text-center py-5 text-muted">
-                        <i class="fas fa-folder-open fa-3x mb-3 opacity-30"></i>
-                        <p class="m-0">Nessun record inserito nel registro.</p>
+                <div class="table-wrapper flex-grow-1">
+                    <div style="overflow-x: auto;">
+                        <table class="table table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Tipo</th>
+                                    <th>Durata</th>
+                                    <th>Note / Causale</th>
+                                    <th class="text-end">Azioni</th>
+                                </tr>
+                            </thead>
+                            <tbody id="registryTableBody">
+                            </tbody>
+                        </table>
+                        <div id="noDataPlaceholder" class="text-center py-5 text-muted">
+                            <i class="fas fa-folder-open fa-3x mb-3 opacity-30"></i>
+                            <p class="m-0">Nessun record inserito nel registro.</p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- VISTA MOBILE - CARD -->
-                <div id="recordsContainerMobile" class="flex-grow-1">
+                <div class="mobile-records-container flex-grow-1">
                     <div id="recordsCardsContainer"></div>
                     <div id="noDataPlaceholderMobile" class="text-center py-5 text-muted">
                         <i class="fas fa-folder-open fa-3x mb-3 opacity-30"></i>
@@ -735,7 +744,7 @@ function initAutoBackup() {
     if (autoBackupInitialized) return;
     autoBackupInitialized = true;
 
-    // Backup ogni 5 minuti se ci sono cambiamenti
+    // Backup ogni 5 minuti
     setInterval(() => {
         performAutoBackup();
     }, 300000);
@@ -983,7 +992,7 @@ function saveToStorage() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
 }
 
-// Aggiorna l'Interfaccia Utente - VERSIONE CORRETTADEFAULT
+// Aggiorna l'Interfaccia Utente
 function updateUI() {
     const tbody = document.getElementById('registryTableBody');
     const placeholder = document.getElementById('noDataPlaceholder');
@@ -1023,7 +1032,7 @@ function updateUI() {
                 <td><span class="font-weight-600">${formatTime(currentMins)}</span></td>
                 <td title="${r.notes}" class="text-muted small"><span>${r.notes}</span></td>
                 <td class="text-end">
-                    <button class="btn-action btn-action-danger" onclick="deleteRecord(${r.id})" title="Elimina">
+                    <button class="btn-action btn-action-danger" onclick="deleteRecord(${r.id})" title="Elimina" type="button">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
@@ -1055,9 +1064,9 @@ function updateUI() {
                     <span class="record-card-label">📝 Note</span>
                     <span class="record-card-value">${r.notes}</span>
                 </div>
-                <div class="record-card-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <div class="record-card-row" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom: none;">
                     <span></span>
-                    <button class="btn-action btn-action-danger" onclick="deleteRecord(${r.id})" title="Elimina">
+                    <button class="btn-action btn-action-danger" onclick="deleteRecord(${r.id})" title="Elimina" type="button">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
