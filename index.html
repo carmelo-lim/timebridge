@@ -345,7 +345,7 @@
             color: #ef4444;
         }
 
-        /* MENU HAMBURGER MOBILE */
+        /* MENU HAMBURGER MOBILE - POSIZIONATO A SINISTRA */
         .mobile-menu-toggle {
             display: none;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -370,16 +370,18 @@
             display: none;
             position: absolute;
             top: 100%;
-            right: 0;
-            background: rgba(30, 41, 59, 0.95);
+            left: 0;
+            background: rgba(30, 41, 59, 0.98);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(14, 165, 233, 0.3);
             border-radius: 10px;
             padding: 0.5rem;
-            min-width: 160px;
+            width: 100vw;
+            max-width: calc(100% + 20px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             z-index: 1001;
             margin-top: 0.5rem;
+            left: -1rem;
         }
 
         .mobile-menu-dropdown.active {
@@ -391,11 +393,11 @@
         .mobile-menu-dropdown .btn-custom {
             width: 100%;
             justify-content: flex-start;
-            padding: 0.5rem 0.9rem;
+            padding: 0.6rem 1rem;
             margin: 0;
             border-radius: 8px;
-            font-size: 0.85rem;
-            gap: 0.4rem;
+            font-size: 0.9rem;
+            gap: 0.6rem;
         }
 
         .mobile-menu-dropdown .btn-light {
@@ -637,11 +639,11 @@
 
 <div class="main-container">
     <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3">
-        <div>
+        <div style="flex: 1;">
             <h1 class="page-title mb-0">MioStraordinario</h1>
             <p class="author-subtitle">Ideato e Realizzato da Assistente Tecnico Informatico Carmelo Vomero</p>
         </div>
-        <div class="position-relative">
+        <div class="position-relative" style="flex-shrink: 0;">
             <!-- DESKTOP BUTTONS -->
             <div class="desktop-buttons d-flex gap-2 flex-wrap">
                 <button class="btn btn-custom btn-light" onclick="window.print()">
@@ -659,7 +661,7 @@
             </div>
 
             <!-- MOBILE MENU BUTTON -->
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu(event)">
                 <i class="fas fa-bars"></i> Menu
             </button>
 
@@ -837,7 +839,8 @@
 
 <script>
 // TOGGLE MOBILE MENU
-function toggleMobileMenu() {
+function toggleMobileMenu(e) {
+    if (e) e.stopPropagation();
     const menu = document.getElementById('mobileMenuDropdown');
     menu.classList.toggle('active');
 }
@@ -846,7 +849,7 @@ function toggleMobileMenu() {
 document.addEventListener('click', (e) => {
     const menu = document.getElementById('mobileMenuDropdown');
     const toggle = document.querySelector('.mobile-menu-toggle');
-    if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+    if (menu && toggle && !menu.contains(e.target) && !toggle.contains(e.target)) {
         menu.classList.remove('active');
     }
 });
